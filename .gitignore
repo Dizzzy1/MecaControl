@@ -1,0 +1,18 @@
+﻿# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+
+# Compilación
+[Bb]in/
+[Oo]bj/
+
+# Archivos temporales
+[Tt]emp/
+[Tt]mp/
+*.log
+
+# Archivos de configuración local
+appsettings.Development.json
