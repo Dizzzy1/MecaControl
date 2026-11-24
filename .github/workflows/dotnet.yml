@@ -26,7 +26,7 @@ jobs:
 
     steps:
       # 1) Descarga el código fuente del repositorio para que el workflow pueda
-      # trabajar con los archivos del proyecto.
+      # trabajar con los archivos del proyecto fianl.
       - name: Checkout repository
         uses: actions/checkout@v4
 
