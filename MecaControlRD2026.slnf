@@ -1,8 +1,0 @@
-{
-  "solution": {
-    "path": "MecaControlRD.slnx",
-    "projects": [
-      "MecaControlRD\\MecaControlRD.csproj"
-    ]
-  }
-}

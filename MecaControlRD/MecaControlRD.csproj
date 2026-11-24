@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include=".github\workflows\dotnet.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aplicada1.Core" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
