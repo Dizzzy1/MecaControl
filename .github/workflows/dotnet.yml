@@ -40,7 +40,7 @@ jobs:
       # 3) Restaura todos los paquetes NuGet y dependencias del proyecto antes
       # de compilar. Esto asegura que el entorno ya tenga todo lo necesario.
       - name: Restore dependencies
-        run: dotnet restore GestionCirugiaPlastica.slnx
+        run: dotnet restore MecaControlRD.slnx
 
       # 4) Instala la herramienta de SonarScanner para .NET. Si el secreto
       # SONAR_TOKEN no existe, esta parte se omite para que el pipeline no falle.
