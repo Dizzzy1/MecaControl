@@ -96,6 +96,6 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: .NET MecaControlRD Tests
+          name: .NET test results
           path: 'MecaControlRD.Tests/**/*.trx'
           reporter: dotnet-trx
