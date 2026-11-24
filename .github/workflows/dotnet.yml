@@ -97,5 +97,5 @@ jobs:
         if: success() || failure()
         with:
           name: .NET MecaControlRD Tests
-          path: 'TestResults/**/*.trx'
+          path: 'MecaControlRD.Tests/**/*.trx'
           reporter: dotnet-trx
