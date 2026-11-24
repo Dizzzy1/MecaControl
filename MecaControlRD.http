@@ -1,0 +1,6 @@
+@MecaControlRD_HostAddress = http://localhost:5037
+
+GET {{MecaControlRD_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
