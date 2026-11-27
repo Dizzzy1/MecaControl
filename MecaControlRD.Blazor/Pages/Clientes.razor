@@ -1,0 +1,139 @@
+﻿@page "/clientes"
+@using MecaControlRD.Blazor.Models
+@using MecaControlRD.Blazor.Services
+@inject ClientesApiService ClientesService
+
+<h3>Gestión de clientes</h3>
+
+@if (cargando)
+{
+    <p>Consultando clientes...</p>
+}
+else if (!string.IsNullOrEmpty(error))
+{
+    <p class="text-danger">@error</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Fecha registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in clientes)
+            {
+                <tr>
+                    <td>@cliente.ClienteId</td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Apellido</td>
+                    <td>@cliente.Telefono</td>
+                    <td>@cliente.Direccion</td>
+                    <td>@cliente.Fecharegistro</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h4>Registrar cliente</h4>
+
+<EditForm Model="nuevoCliente" OnValidSubmit="GuardarCliente">
+    <div class="mb-3">
+        <label>Nombre</label>
+        <InputText class="form-control"
+                   @bind-Value="nuevoCliente.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Apellido</label>
+        <InputText class="form-control"
+                   @bind-Value="nuevoCliente.Apellido" />
+    </div>
+
+    <div class="mb-3">
+        <label>Teléfono</label>
+        <InputText class="form-control"
+                   @bind-Value="nuevoCliente.Telefono" />
+    </div>
+
+    <div class="mb-3">
+        <label>Direccion</label>
+        <InputText class="form-control"
+                   @bind-Value="nuevoCliente.Direccion" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar cliente
+    </button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <p class="mt-3">@mensaje</p>
+}
+
+@code {
+    private List<ClienteDTO> clientes = new();
+    private ClienteDTO nuevoCliente = new();
+
+    private bool cargando = true;
+    private string error = string.Empty;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarClientes();
+    }
+
+    private async Task CargarClientes()
+    {
+        try
+        {
+            cargando = true;
+            clientes = await ClientesService.ObtenerClientesAsync();
+            error = string.Empty;
+        }
+        catch (Exception ex)
+        {
+            error = "No se pudieron cargar los clientes: " + ex.Message;
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private async Task GuardarCliente()
+    {
+        try
+        {
+            var resultado =
+                await ClientesService.CrearClienteAsync(nuevoCliente);
+
+            if (resultado)
+            {
+                mensaje = "Cliente registrado correctamente.";
+                nuevoCliente = new ClienteDTO();
+
+                await CargarClientes();
+            }
+            else
+            {
+                mensaje = "La API no pudo registrar el cliente.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = "Error al registrar: " + ex.Message;
+        }
+    }
+}
