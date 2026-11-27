@@ -2,6 +2,7 @@
   <Folder Name="/Elementos de la solución/">
     <File Path=".github/workflows/dotnet.yml" />
   </Folder>
+  <Project Path="../MecaControlRD.Blazor/MecaControlRD.Blazor.csproj" />
   <Project Path="MecaControlRD.Tests/MecaControlRD.Tests.csproj" />
   <Project Path="MecaControlRD/MecaControlRD.csproj" />
 </Solution>

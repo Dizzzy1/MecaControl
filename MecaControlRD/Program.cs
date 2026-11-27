@@ -4,8 +4,7 @@ using MecaControlRD.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Controladores
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -13,19 +12,19 @@ builder.Services.AddControllers()
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// OpenAPI y Swagger
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContextFactory<MecaControlDbContext>(options =>
-    options.UseSqlServer(
-        "Server=(localdb)\\MSSQLLocalDB;Database=MecaControlRD;Trusted_Connection=True;TrustServerCertificate=True;"));
-
+// Base de datos SQL Server
 builder.Services.AddDbContextFactory<MecaControlDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
+// Servicios
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<VehiculoService>();
 builder.Services.AddScoped<ServicioService>();
@@ -33,12 +32,22 @@ builder.Services.AddScoped<TrabajoService>();
 builder.Services.AddScoped<RecordatorioService>();
 builder.Services.AddScoped<PagoService>();
 builder.Services.AddScoped<UsuarioService>();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorPolicy", policy =>
+    {
+        policy
+            .WithOrigins("https://localhost:7080")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuración HTTP
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -47,6 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("BlazorPolicy");
 
 app.UseAuthorization();
 

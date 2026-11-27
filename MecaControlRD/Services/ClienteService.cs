@@ -12,16 +12,20 @@ public class ClienteService(
 {
     public async Task<Result> Guardar(Cliente cliente)
     {
-        if (!await Existe(cliente.ClienteId))
-        {
-            var inserto = await Insertar(cliente);
-            return Result.Success(inserto);
-        }
-        else
+        if (await Existe(cliente.ClienteId))
         {
             var modifico = await Modificar(cliente);
-            return Result.Success(modifico);
+
+            return modifico
+                ? Result.Success(true)
+                : Result.Failure("No se pudo modificar el cliente.");
         }
+
+        var inserto = await Insertar(cliente);
+
+        return inserto
+            ? Result.Success(true)
+            : Result.Failure("No se pudo insertar el cliente.");
     }
 
     private async Task<bool> Existe(int clienteId)
@@ -83,6 +87,8 @@ public class ClienteService(
             .Where(c => c.ClienteId == clienteId)
             .ExecuteDeleteAsync() > 0;
 
-        return Result.Success(eliminado);
+        return eliminado
+            ? Result.Success(true)
+            : Result.Failure("No se encontró el cliente.");
     }
 }
